@@ -1,76 +1,120 @@
-<div class="registro-container">
-<link rel="stylesheet" href="mascotas.component.css">
+<div class="mascotas-page-container">
 
-  <div class="form-section">
-    <h2>Registro de Mascotas</h2>
-    
-    <form>
-      <!-- Nombre -->
-      <div class="form-group">
-        <label for="nombre">Nombre<span class="required">*</span></label>
-        <input type="text" id="nombre" class="form-input" placeholder="Ej. Luna">
+    <!-- ==================== SECCIÓN 1: CARRUSEL DE ADOPCIÓN (HORIZONTAL) ==================== -->
+    <section class="carousel-section">
+      <div class="carousel-title">
+        <span>¡Cambia una vida!</span>
+        <h2>Mascotas en Adopción</h2>
       </div>
 
-      <!-- Especie -->
-      <div class="form-group">
-        <label for="especie">Especie<span class="required">*</span></label>
-        <select id="especie" class="form-select">
-          <option value="" disabled selected>Selecciona especie</option>
-          <option value="canino">Canino</option>
-          <option value="felino">Felino</option>
-        </select>
-      </div>
-
-      <!-- Raza -->
-      <div class="form-group">
-        <label for="raza">Raza<span class="required">*</span></label>
-        <input type="text" id="raza" class="form-input" placeholder="Ej. Golden Retriever">
-      </div>
-
-      <!-- Fila Inline para Edad y Sexo -->
-      <div class="row-inline">
-        <!-- Edad -->
-        <div class="form-group col-edad">
-          <label for="edad">Edad<span class="required">*</span></label>
-          <div class="input-edad-container">
-            <input type="number" id="edad" class="form-input" placeholder="Ej. 2">
-            <span class="suffix">años</span>
-          </div>
-        </div>
+      <!-- Contenedor principal con flechas -->
+      <div class="carousel-container-wrapper">
+        <button class="carousel-btn prev-btn" (click)="retroceder()"> < <i class="fas fa-chevron-left"></i></button>
         
-        <!-- Sexo -->
-        <div class="form-group col-sexo">
-          <label>Sexo<span class="required">*</span></label>
-          <div class="radio-group">
-            <label class="radio-label">
-              <input type="radio" name="sexo" value="macho"> Macho
-            </label>
-            <label class="radio-label">
-              <input type="radio" name="sexo" value="hembra"> Hembra
-            </label>
+        <div class="carousel-window">
+          
+          <div class="carousel-track" [style.transform]="'translateX(' + posicionActual + 'px)'">
+            
+            <!-- Mascota 1 -->
+            <div class="carousel-slide">
+              <div class="slide-image">
+                <img src="assets/Toby.jpg" alt="Toby">
+              </div>
+              <div class="slide-info">
+                <h3>Toby, 2 años</h3>
+                <p>Compañero enérgico, ideal para familias activas. Le encanta correr al aire libre.</p>
+                <span class="tag-adopcion">Esperando un hogar</span>
+              </div>
+            </div>
+
+            <!-- Mascota 2 -->
+            <div class="carousel-slide">
+              <div class="slide-image">
+                <img src="assets/Luna.jpg" alt="Luna">
+              </div>
+              <div class="slide-info">
+                <h3>Luna, 1 año</h3>
+                <p>Una gatita muy dulce y tranquila. Le fascina dormir cerca de las ventanas y recibir mimos.</p>
+                <span class="tag-adopcion">Esperando un hogar</span>
+              </div>
+            </div>
+
+            <!-- Mascota 3 -->
+            <div class="carousel-slide">
+              <div class="slide-image">
+                <img src="assets/Simba.jpg" alt="Simba">
+              </div>
+              <div class="slide-info">
+                <h3>Simba, 3 años</h3>
+                <p>Muy guardián, cariñoso y obediente. Sabe trucos básicos y convive excelente con otros perritos.</p>
+                <span class="tag-adopcion">Esperando un hogar</span>
+              </div>
+            </div>
+
           </div>
         </div>
+
+        <button class="carousel-btn next-btn" (click)="avanzar()"> > <i class="fas fa-chevron-right"></i></button>
+      </div>
+    </section>
+
+
+  <!-- ==================== SECCIÓN 2: REGISTRO SERVICIO VETERINARIO ==================== -->
+  <section class="vet-registration-section">
+    <div class="form-wrapper">
+      
+      <div class="form-header">
+        <h2>Registro para Servicio Veterinario</h2>
+        <p>Agenda o registra una atención médica para tu compañero fiel</p>
       </div>
 
-      <!-- Botones de Acción -->
-      <div class="actions-group">
-        <button type="submit" class="btn btn-registrar">Registrar</button>
-        <button type="reset" class="btn btn-limpiar">Limpiar</button>
-      </div>
-    </form>
-  </div>
+      <!-- El uso de (ngSubmit) asume que usarás FormsModule o ReactiveForms -->
+      <form class="vet-form">
+        
+        <!-- Fila: Nombre de Mascota y Propietario -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre de la Mascota<span class="required">*</span></label>
+            <input type="text" name="nombreMascota" class="form-control" placeholder="Ej. Luna" required>
+          </div>
+          <div class="form-group">
+            <label>Nombre del Propietario<span class="required">*</span></label>
+            <input type="text" name="nombrePropietario" class="form-control" placeholder="Ej. Juan Pérez" required>
+          </div>
+        </div>
 
-  <!-- TARJETA INFORMATIVA VISUAL (LADO DERECHO) -->
-  <aside class="info-aside">
-    <div class="avatar-box">
-      <!-- Asegúrate de tener una imagen válida en tus assets -->
-      <img src="assets/img/perrito.png" alt="Cachorro Golden Retriever">
+        <!-- Fila: Tipo de Servicio y Fecha/Hora -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>Servicio Requerido<span class="required">*</span></label>
+            <select name="servicio" class="form-control select-control" required>
+              <option value="" disabled selected>Selecciona un servicio</option>
+              <option value="consulta">Consulta Médica General</option>
+              <option value="vacunacion">Vacunación / Refuerzo</option>
+              <option value="desparasitacion">Desparasitación interna/externa</option>
+              <option value="urgencia">Atención de Urgencia</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Fecha de la Cita<span class="required">*</span></label>
+            <input type="date" name="fechaCita" class="form-control" required>
+          </div>
+        </div>
+
+        <!-- Observaciones / Síntomas -->
+        <div class="form-group full-width">
+          <label>Motivo de consulta / Síntomas observados</label>
+          <textarea name="motivo" class="form-control textarea-control" placeholder="Describe brevemente si presenta alguna molestia o si es un control de rutina..." rows="3"></textarea>
+        </div>
+
+        <!-- Botones de Acción con el espaciado correcto -->
+        <div class="vet-actions-group">
+          <button type="submit" class="btn btn-registrar-vet">Agendar Servicio</button>
+          <button type="reset" class="btn btn-limpiar-vet">Limpiar Formulario</button>
+        </div>
+
+      </form>
     </div>
-    <div class="info-icon">
-      <i class="fas fa-paw"></i>
-    </div>
-    <p>Tu mascota<br>merece un gran hogar</p>
-  </aside>
+  </section>
 
 </div>
-
