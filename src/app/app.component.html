@@ -1,0 +1,33 @@
+<div class="dashboard-container">
+  
+  <!-- BARRA LATERAL (NAV GLOBAL) -->
+  <div class="sidebar">
+    <div class="sidebar-logo">🐾 PetDash</div>
+    <nav class="sidebar-nav">
+      <!-- routerLink gestiona la navegación por rutas sin recargar la página -->
+      <a routerLink="/inicio" routerLinkActive="nav-link-active" class="nav-link">
+          Inicio
+      </a>
+      <a routerLink="/mascotas" routerLinkActive="nav-link-active" class="nav-link">
+          Mascotas
+      </a>
+      <a routerLink="/registro" routerLinkActive="nav-link-active" class="nav-link">
+          Registro
+      </a>
+      <a routerLink="/dashboard" routerLinkActive="nav-link-active" class="nav-link">
+          Dashboard
+      </a>
+    </nav>
+
+  </div>
+
+  <!-- CONTENIDO DINÁMICO -->
+  <div class="main-content">
+
+    <!-- AQUÍ SE RENDERIZAN LOS COMPONENTES DE CADA RUTA -->
+    <main class="page-container">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+</div>
