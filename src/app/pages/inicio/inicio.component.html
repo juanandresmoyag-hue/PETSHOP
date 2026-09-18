@@ -1,99 +1,448 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PetShop</title>
-    <link rel="stylesheet" href="inicio.component.css">
-    <!-- Enlace de iconos para que se muestren los elementos visuales de 'Nosotros' -->
-    <link rel="stylesheet" href="https://cloudflare.com">
-</head>
-<body>
+<div class="home-page">
 
-    <!-- NAV BAR -->
-    <header class="navbar">
-        <div class="nav-icons">
-            <i class="fas fa-search"></i>
-            <i class="far fa-user-circle"></i>
-        </div>
-    </header>
+  <section class="hero-section">
+    <div class="hero-copy">
+      <p class="eyebrow">Todo lo que tu mascota necesita</p>
 
-    <!-- HERO SECTION -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Hogar temporal,<br>para un gran futuro</h1>
-            <p>Adopta, cuida, cambia una vida</p>
-            <a href="#" class="btn-hero">Conoce más</a>
+      <h1>
+        Una vida más feliz empieza
+        <em>en casa.</em>
+      </h1>
+
+      <p class="hero-text">
+        Productos elegidos con cariño, orientación veterinaria y mascotas que
+        esperan encontrar una familia.
+      </p>
+
+      <div class="hero-actions">
+        <a routerLink="/mascotas" class="button button-primary">
+          Quiero adoptar
+          <span>→</span>
+        </a>
+
+        <a href="#productos" class="text-link">
+          Ver productos
+          <span>↓</span>
+        </a>
+      </div>
+
+      <div class="trust-line">
+        <span>★★★★★</span>
+        4.9/5 por más de 2,000 familias
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="sun-shape"></div>
+
+      <img
+        src="assets/Toby.jpg"
+        alt="Toby, una mascota en adopción"
+        class="hero-pet"
+      >
+
+      <div class="floating-note">
+        <strong>+2,000</strong>
+        <span>familias felices</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="benefits-strip" aria-label="Beneficios de PetShop">
+    <article>
+      <span class="benefit-icon">✦</span>
+      <div>
+        <strong>Envío sin costo</strong>
+        <small>En compras mayores a $499</small>
+      </div>
+    </article>
+
+    <article>
+      <span class="benefit-icon">♡</span>
+      <div>
+        <strong>Compra con propósito</strong>
+        <small>Apoyas rescates locales</small>
+      </div>
+    </article>
+
+    <article>
+      <span class="benefit-icon">+</span>
+      <div>
+        <strong>Consejo experto</strong>
+        <small>Veterinaria para cada etapa</small>
+      </div>
+    </article>
+  </section>
+
+  <section id="productos" class="content-section products-section">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">Favoritos de la comunidad</p>
+        <h2>Lo bueno para ellos, también para ti</h2>
+      </div>
+
+      <span class="catalog-count">
+        {{ filteredProducts.length }} productos
+      </span>
+
+      <button
+        type="button"
+        class="cart-button"
+        (click)="isCartOpen = true"
+        aria-label="Abrir carrito de compra"
+      >
+        Carrito
+        <span>{{ cartQuantity }}</span>
+      </button>
+    </div>
+
+    <div class="filter-bar" role="group" aria-label="Filtrar catálogo">
+      <button
+        type="button"
+        [class.active]="activeCategory === 'Todos'"
+        (click)="setCategory('Todos')"
+      >
+        Todos
+      </button>
+
+      <button
+        type="button"
+        [class.active]="activeCategory === 'Cuidado diario'"
+        (click)="setCategory('Cuidado diario')"
+      >
+        Cuidado diario
+      </button>
+
+      <button
+        type="button"
+        [class.active]="activeCategory === 'Para consentir'"
+        (click)="setCategory('Para consentir')"
+      >
+        Para consentir
+      </button>
+
+      <button
+        type="button"
+        [class.active]="activeCategory === 'Más vendido'"
+        (click)="setCategory('Más vendido')"
+      >
+        Más vendido
+      </button>
+    </div>
+
+    <div class="product-grid">
+      <article
+        class="product-card"
+        *ngFor="let product of filteredProducts"
+      >
+        <button
+          type="button"
+          class="product-image product-image-button"
+          (click)="openProductDetails(product)"
+          [attr.aria-label]="'Ver detalles de ' + product.nombre"
+        >
+          <img
+            [src]="'assets/catalogo/' + product.imagen"
+            [alt]="product.nombre"
+          >
+        </button>
+
+        <div class="product-info">
+          <div class="product-heading">
+            <span class="product-label">{{ product.categoria }}</span>
+
+            <button
+              type="button"
+              class="favorite-button"
+              [class.favorite-active]="isFavorite(product)"
+              (click)="toggleFavorite(product)"
+              [attr.aria-label]="isFavorite(product) ? 'Quitar de favoritos' : 'Agregar a favoritos'"
+            >
+              {{ isFavorite(product) ? '♥' : '♡' }}
+            </button>
+          </div>
+
+          <h3>{{ product.nombre }}</h3>
+          <p>{{ product.descripcion }}</p>
+
+          <div class="product-footer">
+            <strong>{{ formatPrice(product.precio) }}</strong>
+
+            <button
+              type="button"
+              class="add-cart-button"
+              (click)="addToCart(product)"
+            >
+              Agregar al carrito
+            </button>
+          </div>
         </div>
+      </article>
+    </div>
+  </section>
+
+  <aside
+    class="cart-panel"
+    [class.cart-panel-open]="isCartOpen"
+    aria-label="Carrito de compra"
+  >
+    <div class="cart-panel-header">
+      <div>
+        <p class="eyebrow">Tu selección</p>
+        <h2>Carrito</h2>
+      </div>
+
+      <button
+        type="button"
+        class="close-button"
+        (click)="isCartOpen = false"
+        aria-label="Cerrar carrito"
+      >
+        ×
+      </button>
+    </div>
+
+    <p *ngIf="cartItems.length === 0" class="empty-cart">
+      Todavía no tienes productos en el carrito.
+    </p>
+
+    <div *ngIf="cartItems.length > 0" class="cart-items">
+      <article *ngFor="let item of cartItems" class="cart-item">
+        <img
+          [src]="'assets/catalogo/' + item.product.imagen"
+          [alt]="item.product.nombre"
+        >
+
+        <div>
+          <strong>{{ item.product.nombre }}</strong>
+          <span>{{ formatPrice(item.product.precio) }}</span>
+
+          <div class="quantity-controls">
+            <button type="button" (click)="updateQuantity(item, -1)">−</button>
+            <span>{{ item.cantidad }}</span>
+            <button type="button" (click)="updateQuantity(item, 1)">+</button>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="remove-item-button"
+          (click)="removeFromCart(item)"
+          aria-label="Eliminar producto del carrito"
+        >
+          ×
+        </button>
+      </article>
+    </div>
+
+    <div *ngIf="cartItems.length > 0" class="cart-summary">
+      <span>Total</span>
+      <strong>{{ formatPrice(cartTotal) }}</strong>
+      <button type="button" class="button button-primary">
+        Continuar compra
+        <span>→</span>
+      </button>
+    </div>
+  </aside>
+
+  <div
+    *ngIf="selectedProduct"
+    class="product-modal-backdrop"
+    (click)="closeProductDetails()"
+  >
+    <section
+      class="product-modal"
+      (click)="$event.stopPropagation()"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-label]="'Detalles de ' + selectedProduct.nombre"
+    >
+      <button
+        type="button"
+        class="close-button modal-close-button"
+        (click)="closeProductDetails()"
+        aria-label="Cerrar detalles"
+      >
+        ×
+      </button>
+
+      <img
+        [src]="'assets/catalogo/' + selectedProduct.imagen"
+        [alt]="selectedProduct.nombre"
+      >
+
+      <div class="product-modal-content">
+        <span class="product-label">{{ selectedProduct.categoria }}</span>
+        <h2>{{ selectedProduct.nombre }}</h2>
+        <p>{{ selectedProduct.descripcion }}</p>
+
+        <div class="product-rating">
+          <span>★★★★★</span>
+          <strong>{{ getProductRating(selectedProduct) }}/5</strong>
+        </div>
+
+        <blockquote>
+          “{{ getProductTestimonial(selectedProduct) }}”
+          <cite>Opinión verificada de un cliente</cite>
+        </blockquote>
+
+        <div class="modal-purchase-row">
+          <strong>{{ formatPrice(selectedProduct.precio) }}</strong>
+          <button
+            type="button"
+            class="button button-primary"
+            (click)="addToCart(selectedProduct)"
+          >
+            Agregar al carrito
+          </button>
+        </div>
+      </div>
     </section>
+  </div>
 
-    <!-- CARDS SECTION -->
-    <main class="cards-container">
-        
-        <div class="card">
-            <div class="card-icon blue-icon">
-                <i class="fas fa-paw"></i>
-            </div>
-            <h2>Mascotas</h2>
-            <p>Ver y registrar</p>
-        </div>
+  <section class="adoption-section">
+    <div class="adoption-image">
+      <img src="assets/Luna.jpg" alt="Luna espera una familia">
+    </div>
 
-        <div class="card">
-            <div class="card-icon green-icon">
-                <i class="fas fa-user"></i>
-            </div>
-            <h2>Clientes</h2>
-            <p>Gestionar propietarios</p>
-        </div>
+    <div class="adoption-copy">
+      <p class="eyebrow">Adopción responsable</p>
+      <h2>Tu mejor amigo puede estar esperándote.</h2>
 
-        <div class="card">
-            <div class="card-icon red-icon">
-                <i class="fas fa-heart"></i>
-            </div>
-            <h2>Adopciones</h2>
-            <p>Dar una oportunidad</p>
-        </div>
+      <p>
+        Conoce historias reales de mascotas rescatadas y encuentra una conexión
+        que cambia dos vidas. Te acompañamos antes, durante y después de la
+        adopción.
+      </p>
 
-        <div class="card">
-            <div class="card-icon purple-icon">
-                <i class="fas fa-chart-bar"></i>
-            </div>
-            <h2>Dashboard</h2>
-            <p>Ver estadísticas</p>
-        </div>
+      <div class="adoption-stats">
+        <strong>
+          38
+          <small>mascotas<br>adoptadas</small>
+        </strong>
 
-    </main>
+        <strong>
+          100%
+          <small>historias<br>acompañadas</small>
+        </strong>
+      </div>
 
-    <!-- SECCIÓN NOSOTROS (NUEVA) -->
-    <section class="about-section">
-        <div class="about-content">
-            <div class="about-text">
-                <span class="about-subtitle">Nuestra Misión</span>
-                <h2>Quiénes Somos en PetShop</h2>
-                <p>Somos un espacio dedicado al bienestar animal, donde conectar familias con sus compañeros ideales es nuestra mayor prioridad. Trabajamos día a día gestionando adopciones responsables y garantizando que cada mascota reciba el cuidado y la atención que merece mientras espera su hogar definitivo.</p>
-                
-                <!-- Valores destacados -->
-                <div class="about-badges">
-                    <div class="badge-item">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Cuidado Seguro</span>
-                    </div>
-                    <div class="badge-item">
-                        <i class="fas fa-hand-holding-heart"></i>
-                        <span>Adopción Responsable</span>
-                    </div>
-                    <div class="badge-item">
-                        <i class="fas fa-medkit"></i>
-                        <span>Atención Médica</span>
-                    </div>
-                </div>
-            </div>
-            <div class="about-image">
-                <!-- Imagen simulada del equipo con una mascota -->
-                <img src="assets/images.png" alt="Equipo PetShop">
-            </div>
-        </div>
-    </section>
+      <a routerLink="/mascotas" class="button button-dark">
+        Conocer mascotas
+        <span>→</span>
+      </a>
+    </div>
+  </section>
 
-</body>
-</html>
+  <section id="veterinaria" class="content-section vet-section">
+    <div class="vet-copy">
+      <p class="eyebrow">Cuidado que se nota</p>
+      <h2>Veterinaria a tu alcance</h2>
+
+      <p>
+        Desde una vacuna hasta una consulta de rutina, agenda el cuidado que
+        necesita tu compañero con un equipo que sí escucha.
+      </p>
+
+      <ul>
+        <li><span>✓</span> Consultas generales y preventivas</li>
+        <li><span>✓</span> Vacunación y desparasitación</li>
+        <li><span>✓</span> Seguimiento personalizado</li>
+      </ul>
+
+      <a href="/mascotas#veterinaria" class="button button-primary">
+        Agendar una cita
+        <span>→</span>
+      </a>
+    </div>
+
+    <div class="vet-card">
+      <img
+        src="assets/registroDog.jpg"
+        alt="Perro recibiendo cuidados veterinarios"
+      >
+
+      <div>
+        <strong>¿Tienes una duda?</strong>
+        <span>Estamos para ayudarte</span>
+        <a href="tel:+525500000000">
+          Llamar ahora
+          <span>↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials-section">
+    <div class="section-heading centered">
+      <div>
+        <p class="eyebrow">Historias que nos inspiran</p>
+        <h2>Ellos ya son parte de la familia</h2>
+      </div>
+    </div>
+
+    <div class="testimonial-grid">
+      <blockquote>
+        <div class="quote-mark">“</div>
+        <p>
+          Encontramos a Nala en PetShop y nos guiaron en cada paso. La
+          experiencia fue cercana, clara y muy humana.
+        </p>
+
+        <footer>
+          <span class="avatar">M</span>
+          <strong>
+            Mariana R.
+            <small>Adoptó a Nala</small>
+          </strong>
+          <span class="stars">★★★★★</span>
+        </footer>
+      </blockquote>
+
+      <blockquote>
+        <div class="quote-mark">“</div>
+        <p>
+          La recomendación de alimento cambió por completo la energía de Bruno.
+          Se nota que conocen y quieren a los animales.
+        </p>
+
+        <footer>
+          <span class="avatar avatar-gold">D</span>
+          <strong>
+            Diego P.
+            <small>Cliente desde 2021</small>
+          </strong>
+          <span class="stars">★★★★★</span>
+        </footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <p class="eyebrow">Estamos para acompañarte</p>
+    <h2>Haz espacio para una historia nueva.</h2>
+    <p>
+      Recibe consejos de cuidado, novedades y oportunidades de adopción
+      directamente en tu correo.
+    </p>
+
+    <form (ngSubmit)="subscribeToNewsletter()" #newsletterForm="ngForm" novalidate>
+      <input
+        name="email"
+        type="email"
+        placeholder="Tu correo electrónico"
+        aria-label="Tu correo electrónico"
+        [(ngModel)]="newsletterEmail"
+        required
+      >
+      <button type="submit" class="button button-primary">
+        Quiero estar al día
+        <span>→</span>
+      </button>
+    </form>
+
+    <p *ngIf="newsletterError" class="newsletter-error">{{ newsletterError }}</p>
+    <p *ngIf="newsletterMessage" class="newsletter-success">{{ newsletterMessage }}</p>
+  </section>
+
+</div>

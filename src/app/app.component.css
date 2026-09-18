@@ -1,52 +1,17 @@
-/* CONTENEDOR PRINCIPAL (BARRA HORIZONTAL) */
-.sidebar {
-  background-color: #0b457f; /* Azul marino exacto de la imagen */
-  display: flex;
-  justify-content: space-between; /* Separa el logo a la izquierda y los links a la derecha */
-  align-items: center;
-  padding: 15px 40px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* LOGO (PetDash) */
-.sidebar-logo {
-  color: #f2a93b; /* Amarillo/dorado corporativo */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 22px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* CONTENEDOR DE LOS ENLACES */
-.sidebar-nav {
-  display: flex;
-  gap: 20px; /* Espaciado horizontal uniforme entre cada link */
-  align-items: center;
-}
-
-/* ESTILO BASE DE LOS ENLACES */
-.nav-link {
-  color: #b3cce6; /* Azul claro opaco para los elementos secundarios */
-  text-decoration: none;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  transition: color 0.2s ease-in-out;
-}
-
-/* EFECTO HOVER (Cuando pasas el cursor por encima) */
-.nav-link:hover {
-  color: #ffffff; /* Se ilumina en blanco total */
-}
-
-/* ENLACE ACTIVO (Cuando Angular detecta que estás en esa ruta) */
-.nav-link-active {
-  color: #ffffff !important;
-  font-weight: bold;
-}
+.site-header { align-items:center; background:#fffdf8; border-bottom:1px solid #eadfd2; display:flex; gap:32px; justify-content:space-between; padding:18px 6%; position:relative; z-index:2; }
+.brand { align-items:center; color:#173f45; display:flex; font:700 24px Georgia,serif; gap:10px; text-decoration:none; }
+.brand > span:last-child span { color:#e86d4f; }
+.brand-mark { align-items:center; background:#e86d4f; border-radius:50%; color:#fff; display:flex; font:700 17px Georgia,serif; height:35px; justify-content:center; width:35px; }
+.site-nav { display:flex; gap:26px; }
+.site-nav a { color:#5b6965; font-size:14px; text-decoration:none; }
+.site-nav a:hover,.site-nav .nav-link-active { color:#e86d4f; }
+.header-action { background:#173f45; border-radius:5px; color:#fff; font-size:13px; font-weight:700; padding:12px 17px; text-decoration:none; }
+.header-action span { color:#f5c76b; margin-left:6px; }
+.page-container { min-height:calc(100vh - 72px); }
+.site-footer { background:#102f34; color:#fff; display:grid; gap:30px; grid-template-columns:2fr repeat(3,1fr); padding:42px 6%; }
+.site-footer strong { display:block; font:700 18px Georgia,serif; margin-bottom:12px; }
+.site-footer p,.site-footer a,.site-footer span { color:#b7cbc1; display:block; font-size:12px; line-height:1.8; text-decoration:none; }
+.site-footer a:hover { color:#f6c56e; }
+.social-links { display:flex; flex-direction:column; }
+@media (max-width:760px) { .site-header { flex-wrap:wrap; gap:14px; padding:15px 5%; } .site-nav { gap:13px; order:3; overflow:auto; width:100%; } .header-action { margin-left:auto; } }
+@media (max-width:760px) { .site-footer { grid-template-columns:1fr 1fr; padding:35px 7%; } }
